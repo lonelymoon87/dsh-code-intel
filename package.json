@@ -1,0 +1,81 @@
+{
+  "name": "dsh-code-intel",
+  "version": "0.1.0",
+  "description": "Symbol-aware code outline and hybrid code search for DeepSeek Harness.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm run typecheck && pnpm run test && pnpm run build && publint && npm pack --dry-run"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "code-search",
+    "code-intelligence",
+    "tree-sitter"
+  ],
+  "homepage": "https://github.com/lonelymoon87/dsh-code-intel#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lonelymoon87/dsh-code-intel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lonelymoon87/dsh-code-intel/issues"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "3.18.1-rc.4",
+    "@vscode/tree-sitter-wasm": "0.3.1",
+    "chokidar": "5.0.0",
+    "ignore": "7.0.6",
+    "web-tree-sitter": "0.26.12"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.1 <5",
+    "@deepseek-ai/dsh-credentials": ">=0.1.0-rc.6 <0.2.0",
+    "@deepseek-ai/dsh-fs": ">=0.1.0-rc.6 <0.2.0",
+    "@deepseek-ai/dsh-jobs": ">=0.1.0-rc.6 <0.2.0",
+    "@deepseek-ai/dsh-system-prompt": ">=0.1.0-rc.6 <0.2.0",
+    "@deepseek-ai/dsh-tools": ">=0.1.0-rc.6 <0.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-credentials": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-fs": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-jobs": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-system-prompt": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "0.1.0-rc.6",
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "publint": "0.3.21",
+    "typescript": "^6.0.0",
+    "vitest": "^4.1.8"
+  },
+  "packageManager": "pnpm@11.7.0"
+}

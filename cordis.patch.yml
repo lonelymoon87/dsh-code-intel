@@ -1,0 +1,4 @@
+# Added when a DeepSeek Harness profile installs the dsh-code-intel bundle.
+- insert:
+    - id: code-intel
+      name: dsh-code-intel
