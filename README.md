@@ -44,21 +44,21 @@ Credentials are references, not secret values in YAML. The plugin resolves the r
 The package currently targets DSH `0.1.0-rc.6` plugin APIs and Node.js `^22.19 || >=24`.
 
 ```sh
-dsh plugin --profile default add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
 ```
 
 The release tarball is prebuilt and needs no build allowance. A pinned source install is also supported:
 
 ```sh
-dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.1
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.1
 ```
 
-The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command.
+The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command. Replace `web` with `headless` to install into the one-shot agent profile.
 
 To upgrade, rerun `dsh plugin add` with the newer release URL. To uninstall:
 
 ```sh
-dsh plugin --profile default remove dsh-code-intel
+dsh plugin --profile web remove dsh-code-intel
 ```
 
 ## Configuration
