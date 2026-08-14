@@ -1,6 +1,6 @@
 {
   "name": "dsh-code-intel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Symbol-aware code outline and hybrid code search for DeepSeek Harness.",
   "license": "MIT",
   "type": "module",
