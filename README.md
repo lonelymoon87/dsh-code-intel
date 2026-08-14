@@ -7,7 +7,7 @@
 
 Symbol-aware code outline, persistent workspace indexing, and explicit lexical or embedding-assisted search for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
 
-The installable v0.1.1 release targets DSH 0.1.0-rc.6. npm publication is an optional future distribution channel.
+The installable v0.1.2 release targets DSH 0.1.0-rc.6. This project currently distributes prebuilt packages through GitHub Releases and is not published on npm.
 
 [简体中文](./README.zh-CN.md)
 
@@ -44,13 +44,13 @@ Credentials are references, not secret values in YAML. The plugin resolves the r
 The package currently targets DSH `0.1.0-rc.6` plugin APIs and Node.js `^22.19 || >=24`.
 
 ```sh
-dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.2/dsh-code-intel-0.1.2.tgz
 ```
 
 The release tarball is prebuilt and needs no build allowance. A pinned source install is also supported:
 
 ```sh
-dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.1
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.2
 ```
 
 The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command. Replace `web` with `headless` to install into the one-shot agent profile.
@@ -96,7 +96,7 @@ Hybrid mode uses a complete OpenAI-compatible embeddings URL:
 
 Tests use real temporary workspaces and SQLite databases. They cover all parser families, background indexing, lexical retrieval, direct outline, `fs/observed` refresh, hybrid ranking, credential absence, vector persistence, cache replacement, and invalid configuration.
 
-- The v0.1.1 tarball installs directly from its HTTPS release URL into a clean DSH profile.
+- The v0.1.2 tarball installs directly from its HTTPS release URL into a clean DSH profile.
 - The packed bundle and pinned GitHub source install both appear in `dsh --dump-config`.
 - CI covers Node 22.19 and Node 24; a scheduled workflow repeats the real install against `@deepseek-ai/dsh@latest`.
 - Bugs and compatibility reports are tracked in [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues).

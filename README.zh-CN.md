@@ -7,7 +7,7 @@
 
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的符号级代码大纲、持久工作区索引，以及明确区分词法与 embedding 的代码检索插件。
 
-可安装的 v0.1.1 面向 DSH 0.1.0-rc.6；npm 是后续可选的额外分发渠道。
+可安装的 v0.1.2 面向 DSH 0.1.0-rc.6。本项目当前通过 GitHub Release 分发预构建包，尚未发布 npm 包。
 
 [English](./README.md)
 
@@ -18,7 +18,7 @@
 - 工作区第一次检索会启动可取消的 `code-index` 后台 job，不阻塞当前 agent turn；
 - 索引以 SQLite 保存到 `.dsh/code-index/`，并用 DSH 文件版本增量更新；
 - `fs/observed` 标记 DSH 文件操作带来的变更，Chokidar watcher 覆盖本地 shell、IDE 和外部修改；
-- TypeScript、TSX、JavaScript、JSX、Python、Go、Rust 和 Java 使用 VS Code 发布的免安装脚本 Tree-sitter WASM grammar；
+- TypeScript、TSX、JavaScript、JSX、Python、Go、Rust 和 Java 使用 VS Code 发布的 Tree-sitter WASM grammar，不需要安装脚本；
 - 可选的 OpenAI-compatible embedding 端点会把余弦相似度加入词法排序。未配置时结果会明确标记 `mode: lexical`。
 
 DeepSeek 官方 API 目前没有公开 embedding endpoint。本插件不会虚构默认端点，也不会把纯词法结果包装成语义检索。
@@ -44,18 +44,18 @@ YAML 中只保存 credential reference，不保存秘密值。插件会在每次
 当前代码面向 DSH `0.1.0-rc.6` 插件 API，要求 Node.js `^22.19 || >=24`。
 
 ```sh
-dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.2/dsh-code-intel-0.1.2.tgz
 ```
 
-Release tarball 已预构建，不需要构建权限。也可以固定版本从源码安装：
+Release tarball 已预构建，不需要构建权限。也可以固定版本从源码安装。
 
 ```sh
-dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.1
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.2
 ```
 
-源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。需要装进一次性 Agent 表面时，把命令中的 `web` 换成 `headless`。
+源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。需要装进一次性 Agent profile 时，把命令中的 `web` 换成 `headless`。
 
-升级时用新版本的 Release URL 再执行一次 `dsh plugin add`。卸载命令：
+升级时用新版本的 Release URL 再执行一次 `dsh plugin add`。卸载时执行
 
 ```sh
 dsh plugin --profile web remove dsh-code-intel
@@ -63,7 +63,7 @@ dsh plugin --profile web remove dsh-code-intel
 
 ## 配置
 
-词法模式不需要 provider：
+词法模式不需要 provider。
 
 ```yaml
 - id: code-intel
@@ -79,7 +79,7 @@ dsh plugin --profile web remove dsh-code-intel
     embedding: false
 ```
 
-混合模式使用完整的 OpenAI-compatible embeddings URL：
+混合模式使用完整的 OpenAI-compatible embeddings URL。
 
 ```yaml
     embedding:
@@ -96,7 +96,7 @@ dsh plugin --profile web remove dsh-code-intel
 
 测试使用真实临时工作区和 SQLite，覆盖所有 parser、后台索引、词法检索、文件大纲、`fs/observed` 更新、混合排序、凭据缺失、向量持久化、缓存替换和非法配置。
 
-- v0.1.1 tarball 已从 HTTPS Release URL 直接安装进全新 DSH profile；
+- v0.1.2 tarball 已从 HTTPS Release URL 直接安装进全新 DSH profile；
 - pack 产物与固定版本 GitHub 源码安装均通过 `dsh --dump-config` 检查；
 - CI 覆盖 Node 22.19 与 Node 24，定时任务会用 `@deepseek-ai/dsh@latest` 重跑真实安装；
 - bug 与兼容性问题统一进入 [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues)。
