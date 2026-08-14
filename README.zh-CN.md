@@ -2,7 +2,7 @@
 
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的符号级代码大纲、持久工作区索引，以及明确区分词法与 embedding 的代码检索插件。
 
-> 目前处于早期开发阶段。公开仓库已经建立，npm 包尚未发布。
+> 目前处于早期开发阶段。npm 发布尚未完成，现阶段请从 GitHub Release 安装。
 
 [English](./README.md)
 
@@ -34,16 +34,21 @@ Node 22 仍把内置 SQLite 模块标记为 experimental。索引缓存可丢弃
 
 YAML 中只保存 credential reference，不保存秘密值。插件会在每次索引或查询操作中通过 `ctx.credentials` 解析，并且不会持久化 credential。
 
-## 开发安装
+## 安装
 
 当前代码面向 DSH `0.1.0-rc.6` 插件 API，要求 Node.js `^22.19 || >=24`。
 
 ```sh
-pnpm install
-pnpm run check
-npm pack
 dsh plugin --profile default add ./dsh-code-intel-0.1.0.tgz
 ```
+
+请先从最新 GitHub Release 下载 tarball。也可以固定版本从源码安装：
+
+```sh
+dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.0
+```
+
+源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。Release tarball 已预构建，不需要构建权限。
 
 ## 配置
 
