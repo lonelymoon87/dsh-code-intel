@@ -2,7 +2,7 @@
 
 Symbol-aware code outline, persistent workspace indexing, and explicit lexical or embedding-assisted search for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
 
-> Early development: the public repository is reserved, but the package has not yet been published to npm.
+> Early development: install from the GitHub release while npm publication is pending.
 
 [简体中文](./README.zh-CN.md)
 
@@ -34,16 +34,21 @@ Lexical mode scores exact query matches, query tokens, symbol names, and paths. 
 
 Credentials are references, not secret values in YAML. The plugin resolves the reference through `ctx.credentials` for each indexing or query operation and never stores the credential.
 
-## Development install
+## Install
 
 The package currently targets DSH `0.1.0-rc.6` plugin APIs and Node.js `^22.19 || >=24`.
 
 ```sh
-pnpm install
-pnpm run check
-npm pack
 dsh plugin --profile default add ./dsh-code-intel-0.1.0.tgz
 ```
+
+Download the tarball from the latest GitHub release. A pinned source install is also supported:
+
+```sh
+dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.0
+```
+
+The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command. The release tarball is prebuilt and needs no build allowance.
 
 ## Configuration
 
