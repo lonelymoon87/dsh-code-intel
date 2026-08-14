@@ -44,21 +44,21 @@ YAML 中只保存 credential reference，不保存秘密值。插件会在每次
 当前代码面向 DSH `0.1.0-rc.6` 插件 API，要求 Node.js `^22.19 || >=24`。
 
 ```sh
-dsh plugin --profile default add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.1/dsh-code-intel-0.1.1.tgz
 ```
 
 Release tarball 已预构建，不需要构建权限。也可以固定版本从源码安装：
 
 ```sh
-dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.1
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.1
 ```
 
-源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。
+源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。需要装进一次性 Agent 表面时，把命令中的 `web` 换成 `headless`。
 
 升级时用新版本的 Release URL 再执行一次 `dsh plugin add`。卸载命令：
 
 ```sh
-dsh plugin --profile default remove dsh-code-intel
+dsh plugin --profile web remove dsh-code-intel
 ```
 
 ## 配置
