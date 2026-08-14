@@ -1,8 +1,13 @@
 # dsh-code-intel
 
+[![CI](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/ci.yml/badge.svg)](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/ci.yml)
+[![Latest DSH compatibility](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/dsh-compatibility.yml/badge.svg)](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/dsh-compatibility.yml)
+[![Release](https://img.shields.io/github/v/release/lonelymoon87/dsh-code-intel)](https://github.com/lonelymoon87/dsh-code-intel/releases/latest)
+[![License](https://img.shields.io/github/license/lonelymoon87/dsh-code-intel)](./LICENSE)
+
 Symbol-aware code outline, persistent workspace indexing, and explicit lexical or embedding-assisted search for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
 
-> Early development: install from the GitHub release while npm publication is pending.
+The installable v0.1.0 release targets DSH 0.1.0-rc.6. npm publication is an optional future distribution channel.
 
 [简体中文](./README.zh-CN.md)
 
@@ -39,16 +44,22 @@ Credentials are references, not secret values in YAML. The plugin resolves the r
 The package currently targets DSH `0.1.0-rc.6` plugin APIs and Node.js `^22.19 || >=24`.
 
 ```sh
-dsh plugin --profile default add ./dsh-code-intel-0.1.0.tgz
+dsh plugin --profile default add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.0/dsh-code-intel-0.1.0.tgz
 ```
 
-Download the tarball from the latest GitHub release. A pinned source install is also supported:
+The release tarball is prebuilt and needs no build allowance. A pinned source install is also supported:
 
 ```sh
 dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.0
 ```
 
-The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command. The release tarball is prebuilt and needs no build allowance.
+The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command.
+
+To upgrade, rerun `dsh plugin add` with the newer release URL. To uninstall:
+
+```sh
+dsh plugin --profile default remove dsh-code-intel
+```
 
 ## Configuration
 
@@ -84,6 +95,11 @@ Hybrid mode uses a complete OpenAI-compatible embeddings URL:
 ## Verification
 
 Tests use real temporary workspaces and SQLite databases. They cover all parser families, background indexing, lexical retrieval, direct outline, `fs/observed` refresh, hybrid ranking, credential absence, vector persistence, cache replacement, and invalid configuration.
+
+- The v0.1.0 tarball installs directly from its HTTPS release URL into a clean DSH profile.
+- The packed bundle and pinned GitHub source install both appear in `dsh --dump-config`.
+- CI covers Node 22.19 and Node 24; a scheduled workflow repeats the real install against `@deepseek-ai/dsh@latest`.
+- Bugs and compatibility reports are tracked in [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues).
 
 ## License
 

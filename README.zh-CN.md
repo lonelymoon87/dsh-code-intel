@@ -1,8 +1,13 @@
 # dsh-code-intel
 
+[![CI](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/ci.yml/badge.svg)](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/ci.yml)
+[![最新 DSH 兼容性](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/dsh-compatibility.yml/badge.svg)](https://github.com/lonelymoon87/dsh-code-intel/actions/workflows/dsh-compatibility.yml)
+[![Release](https://img.shields.io/github/v/release/lonelymoon87/dsh-code-intel)](https://github.com/lonelymoon87/dsh-code-intel/releases/latest)
+[![License](https://img.shields.io/github/license/lonelymoon87/dsh-code-intel)](./LICENSE)
+
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的符号级代码大纲、持久工作区索引，以及明确区分词法与 embedding 的代码检索插件。
 
-> 目前处于早期开发阶段。npm 发布尚未完成，现阶段请从 GitHub Release 安装。
+可安装的 v0.1.0 面向 DSH 0.1.0-rc.6；npm 是后续可选的额外分发渠道。
 
 [English](./README.md)
 
@@ -39,16 +44,22 @@ YAML 中只保存 credential reference，不保存秘密值。插件会在每次
 当前代码面向 DSH `0.1.0-rc.6` 插件 API，要求 Node.js `^22.19 || >=24`。
 
 ```sh
-dsh plugin --profile default add ./dsh-code-intel-0.1.0.tgz
+dsh plugin --profile default add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.0/dsh-code-intel-0.1.0.tgz
 ```
 
-请先从最新 GitHub Release 下载 tarball。也可以固定版本从源码安装：
+Release tarball 已预构建，不需要构建权限。也可以固定版本从源码安装：
 
 ```sh
 dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.0
 ```
 
-源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。Release tarball 已预构建，不需要构建权限。
+源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。
+
+升级时用新版本的 Release URL 再执行一次 `dsh plugin add`。卸载命令：
+
+```sh
+dsh plugin --profile default remove dsh-code-intel
+```
 
 ## 配置
 
@@ -80,6 +91,15 @@ dsh plugin --profile default add github:lonelymoon87/dsh-code-intel#v0.1.0
 ```
 
 `indexDir` 和排除项必须是工作区内的相对路径。MVP 只接受已经接入 parser 的扩展名。
+
+## 发布验证
+
+测试使用真实临时工作区和 SQLite，覆盖所有 parser、后台索引、词法检索、文件大纲、`fs/observed` 更新、混合排序、凭据缺失、向量持久化、缓存替换和非法配置。
+
+- v0.1.0 tarball 已从 HTTPS Release URL 直接安装进全新 DSH profile；
+- pack 产物与固定版本 GitHub 源码安装均通过 `dsh --dump-config` 检查；
+- CI 覆盖 Node 22.19 与 Node 24，定时任务会用 `@deepseek-ai/dsh@latest` 重跑真实安装；
+- bug 与兼容性问题统一进入 [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues)。
 
 ## 许可证
 
