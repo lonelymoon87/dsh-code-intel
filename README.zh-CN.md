@@ -7,7 +7,7 @@
 
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的符号级代码大纲、持久工作区索引，以及明确区分词法与 embedding 的代码检索插件。
 
-可安装的 v0.1.2 面向 DSH 0.1.0-rc.6。本项目当前通过 GitHub Release 分发预构建包，尚未发布 npm 包。
+v0.1.3 已针对 DSH 0.1.0-rc.8 与 0.1.1-rc.1 验证，同时保留兼容 rc.6 的 peer 范围。项目继续通过 GitHub Release 分发预构建包，npm 发布已经准备完成但尚未上线。
 
 [English](./README.md)
 
@@ -39,18 +39,24 @@ Node 22 仍把内置 SQLite 模块标记为 experimental。索引缓存可丢弃
 
 YAML 中只保存 credential reference，不保存秘密值。插件会在每次索引或查询操作中通过 `ctx.credentials` 解析，并且不会持久化 credential。
 
+## 权限与数据
+
+- Code Intel 通过 DSH filesystem service 读取受支持的源码文件，监听解析后的本地工作区，并默认在 `.dsh/code-index/` 下写入可重建的 SQLite 索引。
+- 词法模式不发起网络请求。混合模式会把提取的代码块与查询发送到显式配置的 OpenAI-compatible embedding endpoint，并且只解析指定的 credential reference。
+- 索引可能包含从源码派生的片段和可选向量。插件不发送遥测，也不注册自定义持久会话事件；删除索引目录即可清除其持久数据。
+
 ## 安装
 
-当前代码面向 DSH `0.1.0-rc.6` 插件 API，要求 Node.js `^22.19 || >=24`。
+当前代码支持 DSH `>=0.1.0-rc.6 <0.2.0` 插件 API，要求 Node.js `^22.19 || >=24`。
 
 ```sh
-dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.2/dsh-code-intel-0.1.2.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.3/dsh-code-intel-0.1.3.tgz
 ```
 
 Release tarball 已预构建，不需要构建权限。也可以固定版本从源码安装。
 
 ```sh
-dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.2
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.3
 ```
 
 源码安装会运行本包的 `prepare` 构建。pnpm 10 及以上版本默认拒绝执行，第一次安装失败时请按 DSH 输出的提示，将准确的包键加入 profile 的构建白名单，然后重新执行同一条命令。需要装进一次性 Agent profile 时，把命令中的 `web` 换成 `headless`。
@@ -96,9 +102,9 @@ dsh plugin --profile web remove dsh-code-intel
 
 测试使用真实临时工作区和 SQLite，覆盖所有 parser、后台索引、词法检索、文件大纲、`fs/observed` 更新、混合排序、凭据缺失、向量持久化、缓存替换和非法配置。
 
-- v0.1.2 tarball 已从 HTTPS Release URL 直接安装进全新 DSH profile；
+- v0.1.3 tarball 已从 HTTPS Release URL 直接安装进全新的 DSH 0.1.0-rc.8 与 0.1.1-rc.1 profile；
 - pack 产物与固定版本 GitHub 源码安装均通过 `dsh --dump-config` 检查；
-- CI 覆盖 Node 22.19 与 Node 24，定时任务会用 `@deepseek-ai/dsh@latest` 重跑真实安装；
+- CI 覆盖 Node 22.19 与 Node 24，兼容矩阵会分别使用 DSH 0.1.0-rc.8、npm `latest` 与 `next` 标签重跑真实安装；
 - bug 与兼容性问题统一进入 [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues)。
 
 ## 许可证
