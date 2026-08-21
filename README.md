@@ -7,7 +7,7 @@
 
 Symbol-aware code outline, persistent workspace indexing, and explicit lexical or embedding-assisted search for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).
 
-The installable v0.1.2 release targets DSH 0.1.0-rc.6. This project currently distributes prebuilt packages through GitHub Releases and is not published on npm.
+The v0.1.3 release is tested with DSH 0.1.0-rc.8 and 0.1.1-rc.1 while retaining the rc.6-compatible peer range. Prebuilt packages are distributed through GitHub Releases; npm publication is prepared but not yet live.
 
 [简体中文](./README.zh-CN.md)
 
@@ -39,18 +39,24 @@ Lexical mode scores exact query matches, query tokens, symbol names, and paths. 
 
 Credentials are references, not secret values in YAML. The plugin resolves the reference through `ctx.credentials` for each indexing or query operation and never stores the credential.
 
+## Permissions and data
+
+- Code Intel reads supported source files through the mounted DSH filesystem service, watches the resolved local workspace, and writes a rebuildable SQLite index under `.dsh/code-index/` by default.
+- Lexical mode makes no network requests. Hybrid mode sends extracted code chunks and queries to the explicitly configured OpenAI-compatible embedding endpoint and resolves only the named credential reference.
+- The index can contain source-derived snippets and optional vectors. The plugin sends no telemetry and does not register custom durable session events; deleting the index directory removes its persisted data.
+
 ## Install
 
-The package currently targets DSH `0.1.0-rc.6` plugin APIs and Node.js `^22.19 || >=24`.
+The package supports DSH `>=0.1.0-rc.6 <0.2.0` plugin APIs and Node.js `^22.19 || >=24`.
 
 ```sh
-dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.2/dsh-code-intel-0.1.2.tgz
+dsh plugin --profile web add https://github.com/lonelymoon87/dsh-code-intel/releases/download/v0.1.3/dsh-code-intel-0.1.3.tgz
 ```
 
 The release tarball is prebuilt and needs no build allowance. A pinned source install is also supported:
 
 ```sh
-dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.2
+dsh plugin --profile web add github:lonelymoon87/dsh-code-intel#v0.1.3
 ```
 
 The source install runs this package's `prepare` build. pnpm 10 and later reject it until the profile allowlists the exact package key printed by the failed command; apply that instruction and rerun the same `dsh plugin add` command. Replace `web` with `headless` to install into the one-shot agent profile.
@@ -96,9 +102,9 @@ Hybrid mode uses a complete OpenAI-compatible embeddings URL:
 
 Tests use real temporary workspaces and SQLite databases. They cover all parser families, background indexing, lexical retrieval, direct outline, `fs/observed` refresh, hybrid ranking, credential absence, vector persistence, cache replacement, and invalid configuration.
 
-- The v0.1.2 tarball installs directly from its HTTPS release URL into a clean DSH profile.
+- The v0.1.3 tarball installs directly from its HTTPS release URL into clean DSH 0.1.0-rc.8 and 0.1.1-rc.1 profiles.
 - The packed bundle and pinned GitHub source install both appear in `dsh --dump-config`.
-- CI covers Node 22.19 and Node 24; a scheduled workflow repeats the real install against `@deepseek-ai/dsh@latest`.
+- CI covers Node 22.19 and Node 24; a compatibility matrix repeats the real install against DSH 0.1.0-rc.8 plus the `latest` and `next` npm tags.
 - Bugs and compatibility reports are tracked in [GitHub Issues](https://github.com/lonelymoon87/dsh-code-intel/issues).
 
 ## License
